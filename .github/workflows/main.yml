@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Security Scan Report
-          to: ${{ github.event.repository.owner.email }}
+          to: murali@digitaledify.ai
           from: GitHub Security Bot
           body: |
             Hello,
@@ -48,3 +48,6 @@ jobs:
             Please find the attached security scan report from the latest push.
 
           attachments: security.log
+
+
+        
