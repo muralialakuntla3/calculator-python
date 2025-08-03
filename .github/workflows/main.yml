@@ -1,15 +1,12 @@
 name: Security and Notify Workflow
 
 on:
-  - push
   - workflow_dispatch
     
 jobs:
   security_check:
     runs-on: ubuntu-latest
     name: Run Security Check
-    outputs:
-      log_content: ${{ steps.read_log.outputs.log }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -17,14 +14,14 @@ jobs:
       - name: Run Security Check
         uses: ./.github/actions/security-check
         with:
-          python_file: "app.py"
+          python_file: "app/calculator.py"
           log_file: "security.log"
 
-      - name: Read Log File Content
-        id: read_log
-        run: |
-          LOG=$(cat security.log | base64)
-          echo "log=$LOG" >> $GITHUB_OUTPUT
+      - name: Upload Security Log
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-log
+          path: security.log
 
   notify_owner:
     needs: security_check
